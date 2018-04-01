@@ -4,11 +4,14 @@
   "private": true,
   "dependencies": {
     "@types/react-redux": "^5.0.15",
+    "material-ui": "^1.0.0-beta.40",
+    "material-ui-icons": "^1.0.0-beta.36",
     "react": "^16.3.0",
     "react-dom": "^16.3.0",
     "react-redux": "^5.0.7",
     "react-scripts-ts": "2.14.0",
-    "redux": "^3.7.2"
+    "redux": "^3.7.2",
+    "redux-form": "^7.3.0"
   },
   "scripts": {
     "start": "react-scripts-ts start",
@@ -21,6 +24,7 @@
     "@types/node": "^9.6.1",
     "@types/react": "^16.1.0",
     "@types/react-dom": "^16.0.4",
+    "@types/redux-form": "^7.2.2",
     "typescript": "^2.8.1"
   }
 }
