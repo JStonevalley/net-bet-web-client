@@ -1,7 +1,7 @@
 import * as React from 'react'
 import TextField from 'material-ui/TextField'
 
-export const ReduxTextField = ({input, meta, ...custom}: any) => {
+export const ReduxTextField = ({input, meta, ...custom}) => {
   return (
     <TextField
       error={meta && meta.touched && meta.error}
