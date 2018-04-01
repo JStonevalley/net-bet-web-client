@@ -1,3 +1,3 @@
-import {ReduxTextField} from './components/ReduxFormComponents.tsx'
+import {ReduxTextField} from './components/ReduxFormComponents'
 
 export {ReduxTextField}
