@@ -3,8 +3,8 @@ import {connect} from 'react-redux'
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth'
 import firebase from 'firebase'
 import {compose, lifecycle} from 'recompose'
-import {signedUp, logout} from '../actions'
-import {Button} from 'material-ui'
+import {signedUp} from '../actions'
+import {Route} from 'react-router-dom'
 
 // Configure Firebase.
 const config = {
@@ -30,9 +30,9 @@ const uiConfig = {
   ]
 }
 
-export const SignUp = compose(
+export const Signin = compose(
   connect((state) => ({
-    user: state.user.user
+    loggedIn: Boolean(state.user.user)
   })),
   lifecycle({
     componentDidMount () {
@@ -46,12 +46,9 @@ export const SignUp = compose(
       this.unregisterAuthObserver()
     }
   })
-)(({user, dispatch}) => {
-  return (
-    user
-      ? <Button variant='raised' color='primary' onClick={() => dispatch(logout())}>
-        Log out {user.displayName}
-      </Button>
-      : <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
-  )
-})
+)(({loggedIn}) => <Route
+  path='/signin'
+  render={() => !loggedIn && <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />}
+/>
+)
+
