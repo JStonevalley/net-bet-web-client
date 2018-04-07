@@ -1,4 +1,5 @@
-import {Signin} from './Signin'
+import {Signin} from './Signin.jsx'
 import {Signout} from './Signout'
+import {RequireSignedIn} from './RequireSignedIn'
 
-export {Signin, Signout}
+export {Signin, Signout, RequireSignedIn}

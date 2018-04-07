@@ -1,9 +1,8 @@
 import React from 'react'
-import {connect} from 'react-redux'
-import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth'
 import firebase from 'firebase'
-import {compose, lifecycle} from 'recompose'
-import {signedUp} from '../actions'
+import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth'
+import {connect} from 'react-redux'
+import {compose} from 'recompose'
 import {Route} from 'react-router-dom'
 
 // Configure Firebase.
@@ -23,7 +22,7 @@ const uiConfig = {
   // Popup signin flow rather than redirect flow.
   signInFlow: 'redirect',
   // Redirect to /signedIn after sign in is successful. Alternatively you can provide a callbacks.signInSuccess function.
-  signInSuccessUrl: '/signedIn',
+  signInSuccessUrl: '/home',
   // We will display Google as auth providers.
   signInOptions: [
     firebase.auth.GoogleAuthProvider.PROVIDER_ID
@@ -32,23 +31,11 @@ const uiConfig = {
 
 export const Signin = compose(
   connect((state) => ({
-    loggedIn: Boolean(state.user.user)
-  })),
-  lifecycle({
-    componentDidMount () {
-      this.unregisterAuthObserver = firebase.auth().onAuthStateChanged(
-        (user) => {
-          this.props.dispatch(signedUp(user))
-        }
-      )
-    },
-    componentWillUnmount () {
-      this.unregisterAuthObserver()
-    }
-  })
-)(({loggedIn}) => <Route
+    signedIn: state.user.signedIn
+  }))
+)(({signedIn, match}) => <Route
   path='/signin'
-  render={() => !loggedIn && <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />}
+  render={() => signedIn === false && <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />}
 />
 )
 

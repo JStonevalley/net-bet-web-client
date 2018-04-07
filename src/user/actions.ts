@@ -5,10 +5,10 @@ export const SIGNED_UP = 'SIGNED_UP'
 
 export interface SignedUp {
   type: typeof SIGNED_UP
-  user: User
+  user: User | null
 }
 
-export const signedUp = (user: User) => {
+export const signedUp = (user: User | null) => {
   return (dispatch: Dispatch<SignedUp>) => {
     dispatch({
       type: SIGNED_UP,
