@@ -1,33 +1,35 @@
-import {User} from './types'
 import {Dispatch} from 'redux'
+import {User, auth} from 'firebase'
 
-export const SIGN_UP_LOADING = 'SIGN_UP_LOADING'
-export const SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS'
+export const SIGNED_UP = 'SIGNED_UP'
 
-export interface SignUpLoading {
-  type: typeof SIGN_UP_LOADING,
-  user: User | null
+export interface SignedUp {
+  type: typeof SIGNED_UP
+  user: User
 }
 
-export interface SignUpSuccess {
-  type: typeof SIGN_UP_SUCCESS,
-  user: User | null
-}
-
-export type SignUpAction = SignUpLoading | SignUpSuccess
-
-export const signUp = (firstName: string, lastName: string) => {
-  return (dispatch: Dispatch<SignUpAction>) => {
+export const signedUp = (user: User) => {
+  return (dispatch: Dispatch<SignedUp>) => {
     dispatch({
-      type: SIGN_UP_LOADING
+      type: SIGNED_UP,
+      user
     })
-    dispatch({
-      type: SIGN_UP_SUCCESS,
-      user: {
-        id: Math.round(Math.random() * 10000000000),
-        firstName,
-        lastName
-      }
+  }
+}
+
+export const LOG_OUT = 'LOG_OUT'
+
+export interface Logout {
+  type: typeof LOG_OUT
+}
+
+export const logout = () => {
+  return (dispatch: Dispatch<Logout>) => {
+    auth().signOut()
+    .then(() => {
+      dispatch({
+        type: LOG_OUT
+      })
     })
   }
 }

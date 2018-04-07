@@ -1,3 +1,3 @@
-import {ConnectedSignUp as SignUp} from './SignUp'
+import {SignUp} from './SignUp'
 
 export {SignUp}

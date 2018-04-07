@@ -6,12 +6,9 @@ export interface UserState {
   user: User
 }
 
-const defaultState = () => ({id: 'hejsan', firstName: 'Jonas', lastName: 'Stendahl'})
-
-const user = (state: User | null = defaultState(), action: actions.SignUpAction) => {
+const user = (state: User | null = null, action: actions.SignedUp) => {
   switch (action.type) {
-    case actions.SIGN_UP_LOADING: return null
-    case actions.SIGN_UP_SUCCESS: return action.user
+    case actions.SIGNED_UP: return action.user
     default: return state
   }
 }
