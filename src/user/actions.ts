@@ -9,11 +9,9 @@ export interface SignedUp {
 }
 
 export const signedUp = (user: User | null) => {
-  return (dispatch: Dispatch<SignedUp>) => {
-    dispatch({
-      type: SIGNED_UP,
-      user
-    })
+  return {
+    type: SIGNED_UP,
+    user
   }
 }
 

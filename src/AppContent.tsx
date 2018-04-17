@@ -1,6 +1,7 @@
 import * as React from 'react'
-import {Route} from 'react-router-dom'
+import {Route, Switch} from 'react-router-dom'
 import {Signin, RequireSignedIn} from './user/components'
+import {PublicContent} from './publicContent/components/PublicContent'
 
 interface Props {
 }
@@ -8,7 +9,10 @@ interface Props {
 export default ({}: Props) => {
   return (
     <div>
-      <Route path='*' component={RequireSignedIn} />
+      <Switch>
+        <Route path='/public' component={PublicContent} />
+        <Route path='*' component={RequireSignedIn} />
+      </Switch>
       <Signin />
     </div>
   )

@@ -5,6 +5,8 @@
   "dependencies": {
     "@types/react-router": "^4.0.23",
     "firebaseui": "^2.7.0",
+    "immutable": "^3.8.2",
+    "luxon": "^1.0.0",
     "material-ui": "^1.0.0-beta.40",
     "material-ui-icons": "^1.0.0-beta.36",
     "react": "^16.3.0",
@@ -26,7 +28,9 @@
     "eject": "react-scripts-ts eject"
   },
   "devDependencies": {
+    "@types/immutable": "^3.8.7",
     "@types/jest": "^22.2.2",
+    "@types/luxon": "^0.5.0",
     "@types/node": "^9.6.1",
     "@types/react": "^16.1.0",
     "@types/react-dom": "^16.0.4",
