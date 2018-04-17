@@ -15,7 +15,6 @@ export interface ScheduleLoaded {
 export const loadSchedule = (leagueId: number) => {
   return async (dispatch: Dispatch<ScheduleLoaded>) => {
     const response = await makeRequest(getFixturesUrl(leagueId))
-    console.log(response.fixtures)
     dispatch({
       type: SCHEDULE_LOADED,
       leagueId,
