@@ -1,19 +1,30 @@
 import {combineReducers} from 'redux'
-import {Game} from './types'
+import {Fixture, Team} from './types'
 import {Map, List} from 'immutable'
 import * as actions from './actions'
 
 export interface PublicContentState {
-  games: Map<number, List<Game>>
+  fixtures: Map<number, Map<number, Fixture>>,
+  teams: Map<number, Map<number, Team>>
 }
 
-const games = (state: Map<number, List<Game>> = Map<number, List<Game>>(), action: actions.ScheduleLoaded) => {
+const fixtures = (state: Map<number, Map<number, Fixture>> = Map<number, Map<number, Fixture>>(),
+                  action: actions.ScheduleLoaded
+) => {
   switch (action.type) {
-    case actions.SCHEDULE_LOADED: return state.set(action.leagueId, action.games)
+    case actions.SCHEDULE_LOADED: return state.set(action.leagueId, action.fixtures)
+    default: return state
+  }
+}
+
+const teams = (state: Map<number, List<Team>> = Map<number, List<Team>>(), action: actions.TeamsLoaded) => {
+  switch (action.type) {
+    case actions.TEAMS_LOADED: return state.set(action.leagueId, action.teams)
     default: return state
   }
 }
 
 export default combineReducers<PublicContentState>({
-  games
+  fixtures,
+  teams
 })
