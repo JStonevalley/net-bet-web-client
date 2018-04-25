@@ -41,8 +41,10 @@ const GameSummaryCard = ({game, style = {}}: GameSummaryCardProps) => {
   )
 }
 
+type GameScheduleVersion = 'full' | 'played' | 'unplayed'
 interface Props {
   leagueId: number,
+  version?: GameScheduleVersion
 }
 
 interface StateProps {
@@ -59,28 +61,38 @@ class GameSchedulePresentation extends React.Component<Props & StateProps & Disp
     dispatch(loadSchedule(leagueId))
   }
   render () {
-    const {games = List<Game>()} = this.props
-    games.map((game: Game) => console.log(
-      game.result.fullTime.toJS(),
-      game.homeTeam.id,
-      typeof game.homeTeam.id,
-      game.result.fullTime.get(game.homeTeam.id)))
+    const {games = List<Game>(), version = 'full'} = this.props
     return (
-      <div style={{display: 'flex', flexWrap: 'wrap'}}>
-        {games.map((game: Game) => (
-          <GameSummaryCard
-            key={game.id}
-            game={game}
-            style={{flex: '1 0 15rem', margin: '1rem'}}
-          />
-        ))}
+      <div style={{padding: '1rem'}}>
+        <Typography variant='headline'>
+          {version === 'played'
+            ? 'Played games'
+            : version === 'unplayed'
+              ? 'Scheduled games'
+              : 'Games'
+          }
+        </Typography>
+        <div style={{display: 'flex', flexWrap: 'wrap'}}>
+          {games.map((game: Game) => (
+            <GameSummaryCard
+              key={game.id}
+              game={game}
+              style={{flex: '1 0 15rem', margin: '1rem'}}
+            />
+          ))}
+        </div>
       </div>
     )
   }
 }
 
 export const GameSchedule = connect<StateProps, DispatchProp, Props>(
-  (state: State, {leagueId}: Props) => {
+  (state: State, {leagueId, version = 'full'}: Props) => {
+    const gameFilter = version === 'played'
+      ? (game: Game) => game.result.fullTime.size > 0
+      : version === 'unplayed'
+        ? (game: Game) => game.result.fullTime.size === 0
+        : () => true
     const fixtures = state.publicContent.fixtures.get(leagueId)
     const teams = state.publicContent.teams.get(leagueId)
     const games =  fixtures && teams
@@ -92,7 +104,9 @@ export const GameSchedule = connect<StateProps, DispatchProp, Props>(
       games: games.sortBy(
         (game: Game) => game.date,
         (a: DateTime, b: DateTime) => b.diff(a, 'millisecond').milliseconds
-      ).toList()
+      )
+      .filter(gameFilter)
+      .toList()
     }
   }
 )(GameSchedulePresentation)
