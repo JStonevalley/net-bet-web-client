@@ -78,6 +78,6 @@ export class Game {
   }
 
   isPlayed () {
-    return this.result.fullTime.some((goals) => goals !== null)
+    return this.result.fullTime.some((goals) => goals !== null) || this.date < DateTime.local()
   }
 }

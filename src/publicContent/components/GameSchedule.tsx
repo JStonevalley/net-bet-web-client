@@ -32,7 +32,7 @@ const GameSummaryCard = ({game, style = {}}: GameSummaryCardProps) => {
       style={cardStyle}
     >
       <div style={sectionStyle}>
-        <div style={{display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>
+        <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
           <Avatar src={game.homeTeam.crestUrl} />
           <Avatar src={game.awayTeam.crestUrl} />
         </div>
@@ -46,9 +46,12 @@ const GameSummaryCard = ({game, style = {}}: GameSummaryCardProps) => {
         </div>
       </div>
         <div style={sectionStyle}>
-        {!game.isPlayed() && <Typography variant='subheading' align='center' color='textSecondary' >
-          {game.date.setLocale('sv').toLocaleString(DateTime.DATETIME_SHORT)}
-        </Typography>}
+        <Typography variant='subheading' align='center' color='textSecondary' >
+          {game.date.setLocale('sv').toLocaleString(DateTime.DATE_MED)}
+        </Typography>
+        <Typography variant='subheading' align='center' color='textSecondary' >
+          {game.date.setLocale('sv').toLocaleString(DateTime.TIME_24_SIMPLE)}
+        </Typography>
         {game.result.halfTime && <div style={{display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>
           <Typography variant='subheading' align='center' color='textSecondary' >
             ({game.result.halfTime.get(game.homeTeam.id)})
@@ -132,7 +135,9 @@ export const GameSchedule = connect<StateProps, DispatchProp, Props>(
     return {
       games: games.sortBy(
         (game: Game) => game.date,
-        (a: DateTime, b: DateTime) => b.diff(a, 'millisecond').milliseconds
+        (a: DateTime, b: DateTime) => version === 'scheduled'
+          ? a.diff(b, 'millisecond').milliseconds
+          : b.diff(a, 'millisecond').milliseconds
       )
       .filter(gameFilter)
       .toList()
