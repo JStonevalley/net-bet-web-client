@@ -76,4 +76,8 @@ export class Game {
         : undefined
     }
   }
+
+  isPlayed () {
+    return this.result.fullTime.some((goals) => goals !== null)
+  }
 }
