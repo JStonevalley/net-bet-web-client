@@ -41,10 +41,10 @@ const GameSummaryCard = ({game, style = {}}: GameSummaryCardProps) => {
   )
 }
 
-type GameScheduleVersion = 'full' | 'played' | 'unplayed'
+export type GameScheduleVersion = 'full' | 'played' | 'scheduled' | undefined
 interface Props {
   leagueId: number,
-  version?: GameScheduleVersion
+  version: GameScheduleVersion
 }
 
 interface StateProps {
@@ -67,7 +67,7 @@ class GameSchedulePresentation extends React.Component<Props & StateProps & Disp
         <Typography variant='headline'>
           {version === 'played'
             ? 'Played games'
-            : version === 'unplayed'
+            : version === 'scheduled'
               ? 'Scheduled games'
               : 'Games'
           }
@@ -89,9 +89,9 @@ class GameSchedulePresentation extends React.Component<Props & StateProps & Disp
 export const GameSchedule = connect<StateProps, DispatchProp, Props>(
   (state: State, {leagueId, version = 'full'}: Props) => {
     const gameFilter = version === 'played'
-      ? (game: Game) => game.result.fullTime.size > 0
-      : version === 'unplayed'
-        ? (game: Game) => game.result.fullTime.size === 0
+      ? (game: Game) => game.result.fullTime.every((goals) => goals !== null)
+      : version === 'scheduled'
+        ? (game: Game) => game.result.fullTime.some((goals) => goals === null)
         : () => true
     const fixtures = state.publicContent.fixtures.get(leagueId)
     const teams = state.publicContent.teams.get(leagueId)

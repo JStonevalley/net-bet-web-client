@@ -1,10 +1,17 @@
 import * as React from 'react'
-import {GameSchedule} from './GameSchedule'
+import {GameSchedule, GameScheduleVersion} from './GameSchedule'
+import {Route, RouteComponentProps} from 'react-router-dom'
 
-export const PublicContent = () => {
+export const PublicContent = ({match}: RouteComponentProps<{version: GameScheduleVersion}>) => {
   return (
     <div>
-      <GameSchedule leagueId={445} />
+      <Route
+        path={`${match.url}/games/:version?`}
+        render={({match: {params: {version}}}: RouteComponentProps<{version: GameScheduleVersion}>) => <GameSchedule
+          leagueId={445}
+          version={version}
+        />}
+      />
     </div>
   )
 }
