@@ -8,6 +8,8 @@ import {Fixture, Game} from '../types'
 import {State} from '../../'
 import {loadSchedule} from '../actions'
 import {DateTime} from 'luxon'
+import {Place1x2Bet} from '../../betting/components/1x2'
+import {Credit} from '../../betting/types'
 
 interface GameSummaryCardProps {
   game: Game,
@@ -68,6 +70,7 @@ const GameSummaryCard = ({game, style = {}}: GameSummaryCardProps) => {
             {game.result.fullTime.get(game.awayTeam.id)}
           </Typography>
         </div>
+        <Place1x2Bet game={game} maxBet={new Credit(10)} />
       </div>
     </Card>
   )
@@ -109,7 +112,7 @@ class GameSchedulePresentation extends React.Component<Props & StateProps & Disp
             <GameSummaryCard
               key={game.id}
               game={game}
-              style={{flex: '1 0 15rem', margin: '1rem'}}
+              style={{flex: '1 0 15rem', margin: '0.5rem'}}
             />
           ))}
         </div>
