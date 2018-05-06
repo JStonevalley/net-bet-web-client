@@ -4,6 +4,7 @@ import {List} from 'immutable'
 import Typography from 'material-ui/Typography'
 import Card from 'material-ui/Card'
 import Avatar from 'material-ui/Avatar'
+import Paper from 'material-ui/Paper'
 import {Fixture, Game} from '../types'
 import {State} from '../../'
 import {loadSchedule} from '../actions'
@@ -12,11 +13,12 @@ import {Place1x2Bet} from '../../betting/components/1x2'
 import {Credit} from '../../betting/types'
 
 interface GameSummaryCardProps {
-  game: Game,
+  game: Game
+  signedIn?: Boolean
   style?: object
 }
 
-const GameSummaryCard = ({game, style = {}}: GameSummaryCardProps) => {
+const GameSummaryCard = ({game, signedIn, style = {}}: GameSummaryCardProps) => {
   const sectionStyle = {
     display: 'flex',
     flexDirection: 'column'
@@ -35,16 +37,22 @@ const GameSummaryCard = ({game, style = {}}: GameSummaryCardProps) => {
     >
       <div style={sectionStyle}>
         <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-          <Avatar src={game.homeTeam.crestUrl} />
-          <Avatar src={game.awayTeam.crestUrl} />
-        </div>
-        <div style={{display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>
-          <Typography variant='subheading' align='center' style={{flexBasis: '40%'}}>
-            {game.homeTeam.name}
-          </Typography>
-          <Typography variant='subheading' align='center' style={{flexBasis: '40%'}}>
-            {game.awayTeam.name}
-          </Typography>
+          <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', flex: '0 1 6rem'}}>
+            <Paper style={{borderRadius: '50%'}}>
+              <Avatar src={game.homeTeam.crestUrl} style={{width: 56, height: 56}} />
+            </Paper>
+            <Typography variant='subheading' align='center' style={{flexBasis: '40%'}}>
+              {game.homeTeam.name}
+            </Typography>
+          </div>
+          <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', flex: '0 1 6rem'}}>
+            <Paper style={{borderRadius: '50%'}}>
+              <Avatar src={game.awayTeam.crestUrl} style={{width: 56, height: 56}} />
+            </Paper>
+            <Typography variant='subheading' align='center' style={{flexBasis: '40%'}}>
+              {game.awayTeam.name}
+            </Typography>
+          </div>
         </div>
       </div>
         <div style={sectionStyle}>
@@ -70,7 +78,11 @@ const GameSummaryCard = ({game, style = {}}: GameSummaryCardProps) => {
             {game.result.fullTime.get(game.awayTeam.id)}
           </Typography>
         </div>
-        <Place1x2Bet game={game} maxBet={new Credit(10)} />
+        <Place1x2Bet
+          game={game}
+          signedIn={signedIn}
+          maxBet={new Credit(10)}
+        />
       </div>
     </Card>
   )
@@ -84,6 +96,7 @@ interface Props {
 
 interface StateProps {
   games: List<Game>
+  signedIn?: Boolean
 }
 
 interface DispatchProp {
@@ -96,7 +109,7 @@ class GameSchedulePresentation extends React.Component<Props & StateProps & Disp
     dispatch(loadSchedule(leagueId))
   }
   render () {
-    const {games = List<Game>(), version = 'full'} = this.props
+    const {games = List<Game>(), version = 'full', signedIn} = this.props
     return (
       <div style={{padding: '1rem'}}>
         <Typography variant='headline'>
@@ -112,6 +125,7 @@ class GameSchedulePresentation extends React.Component<Props & StateProps & Disp
             <GameSummaryCard
               key={game.id}
               game={game}
+              signedIn={signedIn}
               style={{flex: '1 0 15rem', margin: '0.5rem'}}
             />
           ))}
@@ -136,6 +150,7 @@ export const GameSchedule = connect<StateProps, DispatchProp, Props>(
       ).valueSeq())
       : List<Game>()
     return {
+      signedIn: state.user.signedIn === true,
       games: games.sortBy(
         (game: Game) => game.date,
         (a: DateTime, b: DateTime) => version === 'scheduled'
