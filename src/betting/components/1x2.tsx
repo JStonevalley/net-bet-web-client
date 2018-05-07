@@ -1,11 +1,11 @@
 import * as React from 'react'
 import {withStateHandlers, StateHandlerMap, StateHandler} from 'recompose'
-import Icon from 'material-ui/Icon'
 import Button from 'material-ui/Button'
 import {Link} from 'react-router-dom'
 import {Credit} from '../types'
 import {Game} from '../../publicContent/types'
 import {Selection1x2} from './1x2Selection'
+import {AmountSelection} from './AmountSelection'
 
 interface Place1x2BetProps {
   game: Game
@@ -65,33 +65,14 @@ const Place1x2BetPresentation = (
       <Selection1x2 
         value={selection1x2Value}
         onChange={selectTeam}
+        style={{marginBottom: '1rem'}}
       />   
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between'
-        }}
-      >
-        <Button
-          variant='fab'
-          color='secondary'
-          onClick={decreaseBet}
-          style={{flex: '0 0 56px'}}
-        >
-          <Icon>remove_icon</Icon>
-        </Button>
-        <Button variant='flat' color='primary' style={{margin: '0 0.5rem'}}>
-          Bet {currentBet.amount} credits
-        </Button>
-        <Button
-          variant='fab'
-          color='primary'
-          onClick={increaseBet}
-          style={{flex: '0 0 56px'}}
-        >
-          <Icon>add_icon</Icon>
-        </Button>
-      </div>
+      <AmountSelection
+        increaseBet={increaseBet}
+        decreaseBet={decreaseBet}
+        currentBet={currentBet}
+        teamSelection={teamSelection}
+      />
     </div>
   )
 }
