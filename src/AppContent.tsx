@@ -1,19 +1,48 @@
 import * as React from 'react'
-import {Route, Switch} from 'react-router-dom'
-import {Signin, RequireSignedIn} from './user/components'
-import {PublicContent} from './publicContent/components/PublicContent'
+import {Route, Redirect} from 'react-router-dom'
+import {connect, Dispatch} from 'react-redux'
+import {State} from './combineReducers'
+import {Signin} from './user/components'
+import {Content} from './publicContent/components/Content'
 
-interface Props {
+interface StateProps {
+  signedIn: Boolean | null
 }
 
-export default ({}: Props) => {
+interface DispatchProp {
+  dispatch: Dispatch<any>
+}
+
+const PrivateRoute = connect<StateProps, DispatchProp, any>(
+  (state: State) => ({signedIn: state.user.signedIn})
+)(({component: Component, signedIn, ...rest}: any) => {
+  if (signedIn === null) {
+    return null
+  }
+  return (
+    <Route
+      {...rest}
+      render={props =>
+        signedIn ? (
+          <Component {...props} />
+        ) : (
+          <Redirect
+            to={{
+              pathname: '/signin',
+              state: { from: props.location }
+            }}
+          />
+        )
+      }
+    />
+  )
+})
+
+export default () => {
   return (
     <div>
-      <Switch>
-        <Route path='/public' component={PublicContent} />
-        <Route path='*' component={RequireSignedIn} />
-      </Switch>
       <Signin />
+      <PrivateRoute path='/' component={Content} />
     </div>
   )
 }
