@@ -14,11 +14,10 @@ import {Credit} from '../../betting/types'
 
 interface GameSummaryCardProps {
   game: Game
-  signedIn?: Boolean
   style?: object
 }
 
-const GameSummaryCard = ({game, signedIn, style = {}}: GameSummaryCardProps) => {
+const GameSummaryCard = ({game, style = {}}: GameSummaryCardProps) => {
   const sectionStyle = {
     display: 'flex',
     flexDirection: 'column'
@@ -80,7 +79,6 @@ const GameSummaryCard = ({game, signedIn, style = {}}: GameSummaryCardProps) => 
         </div>
         <Place1x2Bet
           game={game}
-          signedIn={signedIn}
           maxBet={new Credit(10)}
         />
       </div>
@@ -96,7 +94,6 @@ interface Props {
 
 interface StateProps {
   games: List<Game>
-  signedIn?: Boolean
 }
 
 interface DispatchProp {
@@ -109,7 +106,7 @@ class GameSchedulePresentation extends React.Component<Props & StateProps & Disp
     dispatch(loadSchedule(leagueId))
   }
   render () {
-    const {games = List<Game>(), version = 'full', signedIn} = this.props
+    const {games = List<Game>(), version = 'full'} = this.props
     return (
       <div style={{padding: '1rem'}}>
         <Typography variant='headline'>
@@ -125,7 +122,6 @@ class GameSchedulePresentation extends React.Component<Props & StateProps & Disp
             <GameSummaryCard
               key={game.id}
               game={game}
-              signedIn={signedIn}
               style={{flex: '1 0 15rem', margin: '0.5rem'}}
             />
           ))}
@@ -150,7 +146,6 @@ export const GameSchedule = connect<StateProps, DispatchProp, Props>(
       ).valueSeq())
       : List<Game>()
     return {
-      signedIn: state.user.signedIn === true,
       games: games.sortBy(
         (game: Game) => game.date,
         (a: DateTime, b: DateTime) => version === 'scheduled'

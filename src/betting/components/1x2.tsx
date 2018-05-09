@@ -1,7 +1,5 @@
 import * as React from 'react'
 import {withStateHandlers, StateHandlerMap, StateHandler} from 'recompose'
-import Button from 'material-ui/Button'
-import {Link} from 'react-router-dom'
 import {Credit} from '../types'
 import {Game} from '../../publicContent/types'
 import {Selection1x2} from './1x2Selection'
@@ -9,7 +7,6 @@ import {AmountSelection} from './AmountSelection'
 
 interface Place1x2BetProps {
   game: Game
-  signedIn?: Boolean
   maxBet?: Credit
   style?: object
 }
@@ -30,7 +27,6 @@ type CompleteProps = Place1x2BetProps & StateProps & StateHandlerProps
 const Place1x2BetPresentation = (
   {
     game,
-    signedIn,
     style,
     currentBet,
     teamSelection,
@@ -45,13 +41,6 @@ const Place1x2BetPresentation = (
       : teamSelection === null
         ? 'x'
         : undefined
-  if (!signedIn) {
-    return (
-      <Link to='/signin' style={{textDecoration: 'none', alignSelf: 'center'}}>
-        <Button color='primary'>Place bet</Button>
-      </Link>
-    )
-  }
   return (
     <div
       style={{
