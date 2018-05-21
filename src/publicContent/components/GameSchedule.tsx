@@ -8,6 +8,7 @@ import Paper from 'material-ui/Paper'
 import {Fixture, Game} from '../types'
 import {State} from '../../'
 import {loadSchedule} from '../actions'
+import {loadBets} from '../../betting/actions'
 import {DateTime} from 'luxon'
 import {Place1x2Bet} from '../../betting/components/1x2'
 import {Credit} from '../../betting/types'
@@ -104,6 +105,7 @@ class GameSchedulePresentation extends React.Component<Props & StateProps & Disp
   componentDidMount () {
     const {leagueId, dispatch} = this.props
     dispatch(loadSchedule(leagueId))
+    dispatch(loadBets())
   }
   render () {
     const {games = List<Game>(), version = 'full'} = this.props
