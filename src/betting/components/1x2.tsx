@@ -1,5 +1,6 @@
 import * as React from 'react'
 import {withStateHandlers, StateHandlerMap, StateHandler} from 'recompose'
+import Typography from 'material-ui/Typography'
 import {Credit} from '../types'
 import {Game} from '../../publicContent/types'
 import {Selection1x2} from './1x2Selection'
@@ -45,12 +46,13 @@ const Place1x2BetPresentation = (
     <div
       style={{
         display: 'flex',
-        borderTop: 'thin solid gray',
-        paddingTop: '1rem',
         flexDirection: 'column',
         ...style
       }}
     >
+      <Typography variant='title' align='center'>
+        Place bet
+      </Typography>
       <Selection1x2 
         value={selection1x2Value}
         onChange={selectTeam}
