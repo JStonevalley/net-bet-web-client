@@ -3,9 +3,9 @@ import {connect} from 'react-redux'
 import {List} from 'immutable'
 import Typography from '@material-ui/core/Typography'
 import {loadSchedule} from '../actions'
+import {gamesInLeagueSelector} from '../reducer'
 import {loadBets} from '../../betting/actions'
 import {GameSummaryCard} from './GameSummaryCard'
-import {Game} from '../types'
 
 class GameSchedulePresentation extends React.Component {
   componentDidMount () {
@@ -46,13 +46,7 @@ export const GameSchedule = connect(
       : version === 'scheduled'
         ? (game) => !game.isPlayed()
         : () => true
-    const fixtures = state.publicContent.fixtures.get(leagueId)
-    const teams = state.publicContent.teams.get(leagueId)
-    const games = fixtures && teams
-      ? List(fixtures.map(
-        (fixture) => new Game(fixture, teams.get(fixture.homeTeamId), teams.get(fixture.awayTeamId))
-      ).valueSeq())
-      : List()
+    const games = gamesInLeagueSelector(state, {leagueId})
     return {
       games: games.sortBy(
         (game) => game.date,

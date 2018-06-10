@@ -15,13 +15,6 @@ const Place1x2BetPresentation = (
     decreaseBet,
     selectTeam
   }) => {
-  const selection1x2Value = teamSelection === game.homeTeam.id
-    ? '1'
-    : teamSelection === game.awayTeam.id
-      ? '2'
-      : teamSelection === null
-        ? 'x'
-        : undefined
   return (
     <div
       style={{
@@ -34,7 +27,8 @@ const Place1x2BetPresentation = (
         Place bet
       </Typography>
       <Selection1x2
-        value={selection1x2Value}
+        game={game}
+        value={teamSelection}
         onChange={selectTeam}
         style={{marginBottom: '1rem'}}
       />
@@ -72,13 +66,8 @@ export const Place1x2Bet = withStateHandlers(
           currentBet: currentBet.subtract(new Credit(1))
         }
     },
-    selectTeam: (_, {game}) => (selection) => {
-      switch (selection) {
-        case '1': return {teamSelection: game.homeTeam.id}
-        case 'x': return {teamSelection: null}
-        case '2': return {teamSelection: game.awayTeam.id}
-        default: return {teamSelection: undefined}
-      }
+    selectTeam: () => (teamSelection) => {
+      return {teamSelection}
     }
   }
 )(Place1x2BetPresentation)

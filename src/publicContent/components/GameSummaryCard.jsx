@@ -77,13 +77,14 @@ const GameSummaryCardPresentation = ({
             {game.result.fullTime.get(game.awayTeam.id)}
           </Typography>
         </div>
-        <Divider style={{margin: '1rem 0'}} />
+        {!game.isPlayed() && <Divider style={{margin: '1rem 0'}} />}
         {placeBetOpen
           ? <Place1x2Bet
             game={game}
             maxBet={new Credit(10)}
           />
           : <CurrentBetDisplay
+            game={game}
             currentBet={currentBet}
             toggleToChange={() => setPlaceBetOpen(true)}
           />

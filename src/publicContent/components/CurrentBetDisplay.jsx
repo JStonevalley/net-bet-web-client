@@ -2,7 +2,8 @@ import * as React from 'react'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 
-export const CurrentBetDisplay = ({toggleToChange, currentBet}) => {
+export const CurrentBetDisplay = ({toggleToChange, currentBet, game}) => {
+  // if (game.isPlayed()) return null
   return (
     <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
       <Typography variant='title'>
