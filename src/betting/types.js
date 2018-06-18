@@ -17,12 +17,43 @@ export class Credit {
 }
 
 export class Bet {
-  constructor (queryDoc) {
-    this.id = queryDoc.id
-    this.credits = queryDoc.get('credits')
-    this.teamId = queryDoc.get('teamId')
-    this.fixtureId = queryDoc.get('fixtureId')
-    this.leagueId = queryDoc.get('leagueId')
-    this.userId = queryDoc.get('userId')
+  constructor ({id, credits, teamId, fixtureId, leagueId, userId}) {
+    if (!credits) throw new Error({credits: 'required'})
+    if (!teamId) throw new Error({teamId: 'required'})
+    if (!fixtureId) throw new Error({fixtureId: 'required'})
+    if (!leagueId) throw new Error({leagueId: 'required'})
+    this.id = id
+    this.credits = credits
+    this.teamId = teamId
+    this.fixtureId = fixtureId
+    this.leagueId = leagueId
+    this.userId = userId
+  }
+
+  toJSON () {
+    const attributes = {
+      credits: this.credits,
+      teamId: this.teamId,
+      fixtureId: this.fixtureId,
+      leagueId: this.leagueId
+    }
+    return this.id
+      ? {
+        id: this.id,
+        userId: this.userId,
+        ...attributes
+      }
+      : attributes
+  }
+
+  static fromQueryDoc (queryDoc) {
+    return new Bet({
+      id: queryDoc.id,
+      credits: queryDoc.get('credits'),
+      teamId: queryDoc.get('teamId'),
+      fixtureId: queryDoc.get('fixtureId'),
+      leagueId: queryDoc.get('leagueId'),
+      userId: queryDoc.get('userId')
+    })
   }
 }

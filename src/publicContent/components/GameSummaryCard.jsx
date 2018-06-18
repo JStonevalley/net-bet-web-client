@@ -7,11 +7,11 @@ import Avatar from '@material-ui/core/Avatar'
 import Paper from '@material-ui/core/Paper'
 import Divider from '@material-ui/core/Divider'
 import {DateTime} from 'luxon'
-import {Place1x2Bet} from '../../betting/components/1x2'
-import {Credit} from '../../betting/types'
+import {BettingForm} from '../../betting/components/BettingForm'
 import {CurrentBetDisplay} from './CurrentBetDisplay'
 
 const GameSummaryCardPresentation = ({
+  leagueId,
   game,
   currentBet,
   style = {},
@@ -79,9 +79,10 @@ const GameSummaryCardPresentation = ({
         </div>
         {!game.isPlayed() && <Divider style={{margin: '1rem 0'}} />}
         {placeBetOpen
-          ? <Place1x2Bet
+          ? <BettingForm
             game={game}
-            maxBet={new Credit(10)}
+            leagueId={leagueId}
+            maxBet={10}
           />
           : <CurrentBetDisplay
             game={game}

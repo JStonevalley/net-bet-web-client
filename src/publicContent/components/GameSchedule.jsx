@@ -7,6 +7,11 @@ import {gamesInLeagueSelector} from '../reducer'
 import {loadBets} from '../../betting/actions'
 import {GameSummaryCard} from './GameSummaryCard'
 
+const cardSpacing = {
+  flex: '1 0 15rem',
+  margin: '0.5rem'
+}
+
 class GameSchedulePresentation extends React.Component {
   componentDidMount () {
     const {leagueId, dispatch} = this.props
@@ -14,7 +19,7 @@ class GameSchedulePresentation extends React.Component {
     dispatch(loadBets())
   }
   render () {
-    const {games = List(), version = 'full'} = this.props
+    const {games = List(), leagueId, version = 'full'} = this.props
     return (
       <div style={{padding: '1rem'}}>
         <Typography variant='headline'>
@@ -30,7 +35,8 @@ class GameSchedulePresentation extends React.Component {
             <GameSummaryCard
               key={game.id}
               game={game}
-              style={{flex: '1 0 15rem', margin: '0.5rem'}}
+              leagueId={leagueId}
+              style={cardSpacing}
             />
           ))}
         </div>

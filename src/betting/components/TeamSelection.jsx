@@ -24,15 +24,15 @@ const unSelectedDecoration = withStyles(() => ({
 const SelectedButton = selectedDecoration(Button)
 const UnSelectedButton = unSelectedDecoration(Button)
 
-export const Selection1x2 = ({onChange, value, style, game}) => {
+export const TeamSelection = ({input: {value, onChange}, style, game}) => {
   const HomeTeamButton = value === game.homeTeam.id ? SelectedButton : UnSelectedButton
   const TieButton = value === null ? SelectedButton : UnSelectedButton
   const AwayTeamButtom = value === game.awayTeam.id ? SelectedButton : UnSelectedButton
   return (
     <div style={{display: 'flex', justifyContent: 'space-between', ...style}}>
-      <HomeTeamButton onClick={() => onChange(game.homeTeam.id)}>{game.homeTeam.shortName}</HomeTeamButton>
-      <TieButton onClick={() => onChange(null)}>X</TieButton>
-      <AwayTeamButtom onClick={() => onChange(game.awayTeam.id)}>{game.awayTeam.shortName}</AwayTeamButtom>
+      <HomeTeamButton type='button' onClick={() => onChange(game.homeTeam.id)}>{game.homeTeam.shortName || game.homeTeam.name.split(' ')[0]}</HomeTeamButton>
+      <TieButton type='button' onClick={() => onChange(null)}>X</TieButton>
+      <AwayTeamButtom type='button' onClick={() => onChange(game.awayTeam.id)}>{game.awayTeam.shortName || game.awayTeam.name.split(' ')[0]}</AwayTeamButtom>
     </div>
   )
 }
